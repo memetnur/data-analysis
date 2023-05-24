@@ -1,0 +1,31 @@
+-- Calculate total sales
+SELECT SUM(sale_amount) AS total_sales
+FROM sales;
+
+-- Calculate average order value
+SELECT AVG(sale_amount) AS average_order_value
+FROM sales;
+
+-- Identify top-selling products
+SELECT product_id, COUNT(*) AS total_orders
+FROM sales
+GROUP BY product_id
+ORDER BY total_orders DESC
+LIMIT 10;
+
+-- Perform customer segmentation based on purchase behavior
+SELECT customer_id,
+       CASE
+           WHEN COUNT(DISTINCT order_id) >= 5 THEN 'Highly Active'
+           WHEN COUNT(DISTINCT order_id) >= 3 THEN 'Moderately Active'
+           ELSE 'Low Activity'
+       END AS activity_level
+FROM sales
+GROUP BY customer_id;
+
+-- Analyze sales trends over time
+SELECT DATE_TRUNC('month', order_date) AS month,
+       SUM(sale_amount) AS total_sales
+FROM sales
+GROUP BY month
+ORDER BY month;
